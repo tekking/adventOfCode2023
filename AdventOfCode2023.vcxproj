@@ -144,12 +144,12 @@
     <ClInclude Include="day03.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="day01_real.txt" />
-    <Text Include="day01_example.txt" />
-    <Text Include="day02_example.txt" />
-    <Text Include="day02_real.txt" />
-    <Text Include="day03_example.txt" />
-    <Text Include="day03_real.txt" />
+    <Text Include="inputs\day01_example.txt" />
+    <Text Include="inputs\day01_real.txt" />
+    <Text Include="inputs\day02_example.txt" />
+    <Text Include="inputs\day02_real.txt" />
+    <Text Include="inputs\day03_example.txt" />
+    <Text Include="inputs\day03_real.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

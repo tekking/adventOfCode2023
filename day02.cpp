@@ -21,7 +21,7 @@ namespace day02
     {
         std::cout << "Running day 02 \n";
 
-        const std::string fileName{ example ? "day02_example.txt" : "day02_real.txt" };
+        const std::string fileName{ example ? "inputs/day02_example.txt" : "inputs/day02_real.txt" };
         std::ifstream file{ fileName };
 
         int sum{};
