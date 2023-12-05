@@ -34,12 +34,30 @@
     <ClCompile Include="day03.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="day04.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="day05.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="helpers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="day01.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="day03.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="day04.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="day05.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="helpers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -60,6 +78,18 @@
       <Filter>Inputs</Filter>
     </Text>
     <Text Include="inputs\day03_real.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day04_example.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day04_real.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day05_example.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day05_real.txt">
       <Filter>Inputs</Filter>
     </Text>
   </ItemGroup>
