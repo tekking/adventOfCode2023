@@ -5,11 +5,8 @@
 #include <cassert>
 #include <fstream>
 #include <iostream>
-#include <numeric>
 #include <ranges>
 #include <string>
-#include <sstream>
-#include <unordered_map>
 #include <vector>
 
 namespace day09
