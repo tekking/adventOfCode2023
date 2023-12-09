@@ -196,10 +196,10 @@ namespace day08
             directionIndex++;
         }
 
-        std::cout << '\n';
+        // std::cout << '\n';
         for (size_t i = 0; i < initialZ.size(); i++)
         {
-            std::cout << "Location " << i << " has initial " << initialZ[i] << " and period " << periodBetweenZ[i] << '\n';
+            // std::cout << "Location " << i << " has initial " << initialZ[i] << " and period " << periodBetweenZ[i] << '\n';
         }
 
         // Now we have the initials and periods we can try to solve for intersection on 'Z' of all loops
