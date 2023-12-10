@@ -7,6 +7,7 @@
 #include "day07.h"
 #include "day08.h"
 #include "day09.h"
+#include "day10.h"
 
 int main()
 {
@@ -18,8 +19,9 @@ int main()
     day06::run_day(false);
     day07::run_day(false);
     day08::run_day(false);
-    day09::run_day(true);
     day09::run_day(false);
+    day10::run_day(true);
+    day10::run_day(false);
 
     return 0;
 }
