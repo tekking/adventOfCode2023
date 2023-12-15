@@ -47,7 +47,7 @@ namespace day03
         file.seekg(0);
 
         // Read in each line of file
-        int currentLineIndex{};
+        size_t currentLineIndex{};
         while (std::getline(file, line))
         {
             const std::vector<char> fieldLine(line.begin(), line.end());
@@ -66,9 +66,9 @@ namespace day03
         int partsSum{};
 
         // Loop over the lines detecting numbers:
-        for (int y = 0; y < height; y ++)
+        for (size_t y = 0; y < height; y ++)
         {
-            int x{};
+            size_t x{};
 
             // Keep going on line until we pass right-hand of field.
             while (x < width)
@@ -80,7 +80,7 @@ namespace day03
                 int partNumber{};
                 // Collect full partNumber
                 char digit;
-                const int startOfNumber{ x };
+                const size_t startOfNumber{ x };
                 while (x < width && std::isdigit(digit = field[y][x]))
                 {
                     partNumber *= 10;
@@ -88,13 +88,13 @@ namespace day03
                     x++;
                 }
 
-                const int endOfNumber{ x - 1 };
+                const size_t endOfNumber{ x - 1 };
 
                 // Now need to determine if number is partConnected
                 bool partAdjacent{};
-                for (int compareY = y - 1; compareY <= y + 1; compareY++)
+                for (size_t compareY = y - 1; compareY <= y + 1; compareY++)
                 {
-                    for (int compareX = startOfNumber - 1; compareX <= endOfNumber + 1; compareX++)
+                    for (size_t compareX = startOfNumber - 1; compareX <= endOfNumber + 1; compareX++)
                     {
                         if (compareY > 0 && compareY < height && compareX > 0 && compareX < width
                             && !std::isdigit(field[compareY][compareX]) && field[compareY][compareX] != '.')
@@ -114,8 +114,8 @@ namespace day03
     int solvePart2(std::ifstream& file)
     {
         const std::vector<std::vector<char>> field{ parseInput(file) };
-        const int height{ static_cast<int>(field.size()) };
-        const int width{ static_cast<int>(field[0].size()) };
+        const size_t height{ (field.size()) };
+        const size_t width{ (field[0].size()) };
 
         // We create two new fields where we keep track of the nr of adjacent numbers if *
         // and the product of adjacent numbers.
@@ -123,9 +123,9 @@ namespace day03
         std::vector<std::vector<int>> adjProductField(height, std::vector<int>(width, 1));
 
         // Loop over the lines detecting numbers to fill out our adj fields:
-        for (int y = 0; y < height; y++)
+        for (size_t y = 0; y < height; y++)
         {
-            int x{};
+            size_t x{};
 
             // Keep going on line until we pass right-hand of field.
             while (x < width)
@@ -137,7 +137,7 @@ namespace day03
                 int partNumber{};
                 // Collect full partNumber
                 char digit;
-                const int startOfNumber{ x };
+                const size_t startOfNumber{ x };
                 while (x < width && std::isdigit(digit = field[y][x]))
                 {
                     partNumber *= 10;
@@ -145,12 +145,12 @@ namespace day03
                     x++;
                 }
 
-                const int endOfNumber{ x - 1 };
+                const size_t endOfNumber{ x - 1 };
 
                 // Now check for adjacent gears to up our count/product field for
-                for (int compareY = y - 1; compareY <= y + 1; compareY++)
+                for (size_t compareY = y - 1; compareY <= y + 1; compareY++)
                 {
-                    for (int compareX = startOfNumber - 1; compareX <= endOfNumber + 1; compareX++)
+                    for (size_t compareX = startOfNumber - 1; compareX <= endOfNumber + 1; compareX++)
                     {
                         if (compareY > 0 && compareY < height && compareX > 0 && compareX < width
                             && field[compareY][compareX] == '*')
@@ -166,9 +166,9 @@ namespace day03
 
         // Loop over the adj fields to determine the sum of faulty gears
         int faultySum{};
-        for (int y = 0; y < height; y++)
+        for (size_t y = 0; y < height; y++)
         {
-            for (int x = 0; x < width; x++)
+            for (size_t x = 0; x < width; x++)
             {
                 if (adjCountField[y][x] == 2)
                     faultySum += adjProductField[y][x];

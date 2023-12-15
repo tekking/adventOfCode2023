@@ -78,7 +78,7 @@ namespace day01
         int secondDigit{};
         int firstDigit{ -1 };
 
-        for (int i = 0; i < line.length(); i++)
+        for (size_t i = 0; i < line.length(); i++)
         {
             std::string subLine{ line.substr(0, i + 1) };
             int currentDigit;
