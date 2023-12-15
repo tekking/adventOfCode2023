@@ -146,6 +146,7 @@
     <ClCompile Include="day10.cpp" />
     <ClCompile Include="day11.cpp" />
     <ClCompile Include="day12.cpp" />
+    <ClCompile Include="day13.cpp" />
     <ClCompile Include="helpers.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -161,6 +162,7 @@
     <ClInclude Include="day10.h" />
     <ClInclude Include="day11.h" />
     <ClInclude Include="day12.h" />
+    <ClInclude Include="day13.h" />
     <ClInclude Include="helpers.h" />
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +192,8 @@
     <Text Include="inputs\day11_real.txt" />
     <Text Include="inputs\day12_example.txt" />
     <Text Include="inputs\day12_real.txt" />
+    <Text Include="inputs\day13_example.txt" />
+    <Text Include="inputs\day13_real.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
