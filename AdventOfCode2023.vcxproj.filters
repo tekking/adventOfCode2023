@@ -61,6 +61,9 @@
     <ClCompile Include="day11.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="day12.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="day01.h">
@@ -94,6 +97,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="day11.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="day12.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -168,6 +174,12 @@
       <Filter>Inputs</Filter>
     </Text>
     <Text Include="inputs\day11_real.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day12_example.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day12_real.txt">
       <Filter>Inputs</Filter>
     </Text>
   </ItemGroup>

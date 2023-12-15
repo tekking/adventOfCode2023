@@ -11,7 +11,7 @@
 namespace day05
 {
     long long solvePart1(std::ifstream& file);
-    int solvePart2(std::ifstream& file);
+    long long solvePart2(std::ifstream& file);
 
     void run_day(bool example)
     {
@@ -160,7 +160,7 @@ namespace day05
         return std::ranges::min(seeds);
     }
 
-    int solvePart2(std::ifstream& file)
+    long long solvePart2(std::ifstream& file)
     {
         // Parse the input
         auto [seedRanges, mappings] = parseInputPart2(file);
