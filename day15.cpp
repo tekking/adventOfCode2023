@@ -62,16 +62,16 @@ namespace day15
         {
             long long sum{};
             int lensNr{};
-            for (auto [focalLength, label] : lenses)
+            for (auto& [focalLength, label] : lenses)
             {
                 lensNr++;
-                sum += (index + 1) * lensNr * focalLength;
+                sum += (index + 1LL) * lensNr * focalLength;
             }
 
             return sum;
         }
 
-        void addLens(Lens l)
+        void addLens(const Lens& l)
         {
             for (auto& lens : lenses)
             {
@@ -135,7 +135,7 @@ namespace day15
                 const auto hash{ hashString(label) };
 
                 const int focalLength = instruction[instruction.size() - 1] - '0';
-                boxes[hash].addLens(Lens{ focalLength, label });
+                boxes[static_cast<size_t>(hash)].addLens(Lens{ focalLength, label });
             }
         }
 
