@@ -242,5 +242,8 @@
     <Text Include="inputs\day17_real.txt">
       <Filter>Inputs</Filter>
     </Text>
+    <Text Include="inputs\day17_example2.txt">
+      <Filter>Inputs</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -4,9 +4,7 @@
 #include <array>
 #include <cassert>
 #include <fstream>
-#include <list>
 #include <iostream>
-#include <map>
 #include <ranges>
 #include <queue>
 #include <string>
@@ -102,10 +100,10 @@ namespace day17
     {
         const size_t goalX{ city.width - 1 };
         const size_t goalY{ city.height - 1 };
-        State startPos{ 0, 0, 0, Direction::east, 0, goalX, goalY };
+        const State startPos{ 0, 0, 0, Direction::east, 0, goalX, goalY };
 
         // To keep track of passed states
-        // bool, 12 array for nrMovedStraight * 4 + direction.
+        // bool, 16 array for nrMovedStraight * 4 + direction.
         std::vector passed(city.height, std::vector(city.width, std::array<bool, 16>{}));
 
 
@@ -205,14 +203,161 @@ namespace day17
         return 0;
     }
 
+    // A*, though state is complicated by the min 4, max 10 in 1 direction restraint.
+    // Using manhattan distance as remainder heuristic
+    // Not actually 100% sure that heuristic is admissible here, because of the >= 4 moved straight
+    // requirement at the end, but it works for the inputs.
+    long long determineShortestPathLengthForUltraCrucible(const City& city)
+    {
+        const size_t goalX{ city.width - 1 };
+        const size_t goalY{ city.height - 1 };
+        const State startPos{ 0, 0, 0, Direction::east, 0, goalX, goalY };
+
+        // To keep track of passed states
+        // bool, 44 array for nrMovedStraight * 4 + direction.
+        std::vector passed(city.height, std::vector(city.width, std::array<bool, 44>{}));
+
+
+        auto cmp = [](const State l, const State r) { return l.heuristicScore > r.heuristicScore; };
+        std::priority_queue<State, std::vector<State>, decltype(cmp)> statePriorityQueue(cmp);
+        statePriorityQueue.push(startPos);
+
+        while (!statePriorityQueue.empty())
+        {
+            State s{ statePriorityQueue.top() };
+            statePriorityQueue.pop();
+
+            const auto directionIndex = s.nrMovedStraight * 4LL + (static_cast<size_t>(s.lastDirection));
+            if (passed[s.y][s.x][directionIndex])
+            {
+                continue;
+            }
+
+            passed[s.y][s.x][directionIndex] = true;
+
+            if (s.y == goalY && s.x == goalX && s.nrMovedStraight >= 4)
+            {
+                return s.costSoFar;
+            }
+
+            if (s.y > 0 && s.lastDirection != Direction::south)
+            {
+                if (s.lastDirection == Direction::north)
+                {
+                    if (s.nrMovedStraight < 10)
+                    {
+                        State newState{ s.x, s.y - 1, s.nrMovedStraight + 1, Direction::north, s.costSoFar + city.map[s.y - 1][s.x], goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+                else
+                {
+                    if (s.nrMovedStraight >= 4 && s.y > 3)
+                    {
+                        int costSoFar{ s.costSoFar };
+                        for(int i =1; i <= 4; i++)
+                        {
+                            costSoFar += city.map[s.y - i][s.x];
+                        }
+                        State newState{ s.x, s.y - 4, 4, Direction::north, costSoFar, goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+            }
+
+            if (s.y < goalY && s.lastDirection != Direction::north)
+            {
+                if (s.lastDirection == Direction::south)
+                {
+                    if (s.nrMovedStraight < 10)
+                    {
+                        State newState{ s.x, s.y + 1, s.nrMovedStraight + 1, Direction::south, s.costSoFar + city.map[s.y + 1][s.x], goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+                else
+                {
+                    if (s.nrMovedStraight >= 4 && s.y < goalY - 3)
+                    {
+                        int costSoFar{ s.costSoFar };
+                        for (int i = 1; i <= 4; i++)
+                        {
+                            costSoFar += city.map[s.y + i][s.x];
+                        }
+
+                        State newState{ s.x, s.y + 4, 4, Direction::south, costSoFar, goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+            }
+
+            if (s.x > 0 && s.lastDirection != Direction::east)
+            {
+                if (s.lastDirection == Direction::west)
+                {
+                    if (s.nrMovedStraight < 10)
+                    {
+                        State newState{ s.x - 1, s.y, s.nrMovedStraight + 1, Direction::west, s.costSoFar + city.map[s.y][s.x - 1], goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+                else
+                {
+                    if (s.nrMovedStraight >= 4 && s.x > 3)
+                    {
+                        int costSoFar{ s.costSoFar };
+                        for (int i = 1; i <= 4; i++)
+                        {
+                            costSoFar += city.map[s.y][s.x - i];
+                        }
+
+                        State newState{ s.x - 4, s.y, 4, Direction::west, costSoFar, goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+            }
+
+            if (s.x < goalX && s.lastDirection != Direction::west)
+            {
+                if (s.lastDirection == Direction::east)
+                {
+                    if (s.nrMovedStraight < 10)
+                    {
+                        State newState{ s.x + 1, s.y, s.nrMovedStraight + 1, Direction::east, s.costSoFar + city.map[s.y][s.x + 1], goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+                else
+                {
+                    if (s.nrMovedStraight >= 4 && s.x < goalX - 3)
+                    {
+                        int costSoFar{ s.costSoFar };
+                        for (int i = 1; i <= 4; i++)
+                        {
+                            costSoFar += city.map[s.y][s.x + i];
+                        }
+
+                        State newState{ s.x + 4, s.y, 4, Direction::east, costSoFar, goalX, goalY };
+                        statePriorityQueue.push(newState);
+                    }
+                }
+            }
+        }
+
+        // Found no path to goal
+        assert(false);
+        return 0;
+    }
+
     long long solvePart1(std::ifstream& file)
     {
-        City city(file);
+        const City city(file);
         return determineShortestPathLength(city);
     }
 
     long long solvePart2(std::ifstream& file)
     {
-        return 0;
+        const City city(file);
+        return determineShortestPathLengthForUltraCrucible(city);
     }
 }
