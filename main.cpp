@@ -14,6 +14,7 @@
 #include "day14.h"
 #include "day15.h"
 #include "day16.h"
+#include "day17.h"
 
 int main()
 {
@@ -33,8 +34,9 @@ int main()
     day13::run_day(false);
     day14::run_day(false);
     day15::run_day(false);
-    day16::run_day(true);
     day16::run_day(false);
+    day17::run_day(true);
+    day17::run_day(false);
 
     return 0;
 }
