@@ -47,10 +47,21 @@ namespace day17
         int nrMovedStraight{};
         Direction lastDirection{};
         int costSoFar{};
+        size_t heuristicScore{};
 
-        auto heuristicScore(const size_t goalX, const size_t goalY)
+        [[nodiscard]] auto calculateHeuristicScore(const size_t goalX, const size_t goalY) const
         {
             return costSoFar + (goalX - x) + (goalY - y);
+        }
+
+        State(size_t xP, size_t yP, int nrMovedStraightP, Direction lastDirectionP, int costSoFarP, size_t goalX, size_t goalY)
+        {
+            x = xP;
+            y = yP;
+            nrMovedStraight = nrMovedStraightP;
+            lastDirection = lastDirectionP;
+            costSoFar = costSoFarP;
+            heuristicScore = calculateHeuristicScore(goalX, goalY);
         }
     };
 
@@ -89,21 +100,23 @@ namespace day17
     // Using manhattan distance as remainder heuristic
     long long determineShortestPathLength(const City& city)
     {
-        State startPos{ 0, 0, 0, Direction::east, 0 };
         const size_t goalX{ city.width - 1 };
         const size_t goalY{ city.height - 1 };
+        State startPos{ 0, 0, 0, Direction::east, 0, goalX, goalY };
 
         // To keep track of passed states
         // bool, 12 array for nrMovedStraight * 4 + direction.
         std::vector passed(city.height, std::vector(city.width, std::array<bool, 16>{}));
 
-        std::multimap<size_t, State> sortedStateQueue{};
-        sortedStateQueue.insert(std::pair{startPos.heuristicScore(goalX, goalY), startPos});
 
-        while(!sortedStateQueue.empty())
+        auto cmp = [](const State l, const State r) { return l.heuristicScore > r.heuristicScore; };
+        std::priority_queue<State, std::vector<State>, decltype(cmp)> statePriorityQueue(cmp);
+        statePriorityQueue.push(startPos);
+
+        while(!statePriorityQueue.empty())
         {
-            State s{ sortedStateQueue.begin()->second };
-            sortedStateQueue.erase(sortedStateQueue.begin());
+            State s{ statePriorityQueue.top() };
+            statePriorityQueue.pop();
 
             const auto directionIndex = s.nrMovedStraight * 4LL + (static_cast<size_t>(s.lastDirection));
             if (passed[s.y][s.x][directionIndex])
@@ -124,14 +137,14 @@ namespace day17
                 {
                     if (s.nrMovedStraight < 3)
                     {
-                        State newState{ s.x, s.y - 1, s.nrMovedStraight + 1, Direction::north, s.costSoFar + city.map[s.y - 1][s.x] };
-                        sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                        State newState{ s.x, s.y - 1, s.nrMovedStraight + 1, Direction::north, s.costSoFar + city.map[s.y - 1][s.x], goalX, goalY };
+                        statePriorityQueue.push(newState);
                     }
                 }
                 else
                 {
-                    State newState{ s.x, s.y - 1, 1, Direction::north, s.costSoFar + city.map[s.y - 1][s.x] };
-                    sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                    State newState{ s.x, s.y - 1, 1, Direction::north, s.costSoFar + city.map[s.y - 1][s.x], goalX, goalY };
+                    statePriorityQueue.push(newState);
                 }
             }
 
@@ -141,14 +154,14 @@ namespace day17
                 {
                     if (s.nrMovedStraight < 3)
                     {
-                        State newState{ s.x, s.y + 1, s.nrMovedStraight + 1, Direction::south, s.costSoFar + city.map[s.y + 1][s.x] };
-                        sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                        State newState{ s.x, s.y + 1, s.nrMovedStraight + 1, Direction::south, s.costSoFar + city.map[s.y + 1][s.x], goalX, goalY };
+                        statePriorityQueue.push(newState);
                     }
                 }
                 else
                 {
-                    State newState{ s.x, s.y + 1, 1, Direction::south, s.costSoFar + city.map[s.y + 1][s.x] };
-                    sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                    State newState{ s.x, s.y + 1, 1, Direction::south, s.costSoFar + city.map[s.y + 1][s.x], goalX, goalY };
+                    statePriorityQueue.push(newState);
                 }
             }
 
@@ -158,14 +171,14 @@ namespace day17
                 {
                     if (s.nrMovedStraight < 3)
                     {
-                        State newState{ s.x - 1, s.y, s.nrMovedStraight + 1, Direction::west, s.costSoFar + city.map[s.y][s.x - 1] };
-                        sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                        State newState{ s.x - 1, s.y, s.nrMovedStraight + 1, Direction::west, s.costSoFar + city.map[s.y][s.x - 1], goalX, goalY };
+                        statePriorityQueue.push(newState);
                     }
                 }
                 else
                 {
-                    State newState{ s.x - 1, s.y, 1, Direction::west, s.costSoFar + city.map[s.y][s.x - 1] };
-                    sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                    State newState{ s.x - 1, s.y, 1, Direction::west, s.costSoFar + city.map[s.y][s.x - 1], goalX, goalY };
+                    statePriorityQueue.push(newState);
                 }
             }
 
@@ -175,14 +188,14 @@ namespace day17
                 {
                     if (s.nrMovedStraight < 3)
                     {
-                        State newState{ s.x + 1, s.y, s.nrMovedStraight + 1, Direction::east, s.costSoFar + city.map[s.y][s.x + 1] };
-                        sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                        State newState{ s.x + 1, s.y, s.nrMovedStraight + 1, Direction::east, s.costSoFar + city.map[s.y][s.x + 1], goalX, goalY };
+                        statePriorityQueue.push(newState);
                     }
                 }
                 else
                 {
-                    State newState{ s.x + 1, s.y, 1, Direction::east, s.costSoFar + city.map[s.y][s.x + 1] };
-                    sortedStateQueue.emplace(newState.heuristicScore(goalX, goalY), newState);
+                    State newState{ s.x + 1, s.y, 1, Direction::east, s.costSoFar + city.map[s.y][s.x + 1], goalX, goalY };
+                    statePriorityQueue.push(newState);
                 }
             }
         }
