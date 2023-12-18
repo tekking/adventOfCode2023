@@ -19,6 +19,8 @@
 
 int main()
 {
+    // day18::test_part2();
+
     day01::run_day(false);
     day02::run_day(false);
     day03::run_day(false);
