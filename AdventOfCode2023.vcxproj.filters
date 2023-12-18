@@ -79,6 +79,9 @@
     <ClCompile Include="day17.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="day18.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="day01.h">
@@ -245,5 +248,14 @@
     <Text Include="inputs\day17_example2.txt">
       <Filter>Inputs</Filter>
     </Text>
+    <Text Include="inputs\day18_real.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+    <Text Include="inputs\day18_example.txt">
+      <Filter>Inputs</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="day18.h" />
   </ItemGroup>
 </Project>
