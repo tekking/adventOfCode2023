@@ -153,6 +153,7 @@
     <ClCompile Include="day17.cpp" />
     <ClCompile Include="day18.cpp" />
     <ClCompile Include="day19.cpp" />
+    <ClCompile Include="day20.cpp" />
     <ClCompile Include="helpers.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -174,6 +175,7 @@
     <ClInclude Include="day16.h" />
     <ClInclude Include="day17.h" />
     <ClInclude Include="day19.h" />
+    <ClInclude Include="day20.h" />
     <ClInclude Include="helpers.h" />
   </ItemGroup>
   <ItemGroup>
@@ -218,6 +220,8 @@
     <Text Include="inputs\day18_real.txt" />
     <Text Include="inputs\day19_example.txt" />
     <Text Include="inputs\day19_real.txt" />
+    <Text Include="inputs\day20_example.txt" />
+    <Text Include="inputs\day20_real.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="day18.h" />

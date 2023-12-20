@@ -17,11 +17,10 @@
 #include "day17.h"
 #include "day18.h"
 #include "day19.h"
+#include "day20.h"
 
 int main()
 {
-    // day18::test_part2();
-
     day01::run_day(false);
     day02::run_day(false);
     day03::run_day(false);
@@ -39,10 +38,11 @@ int main()
     day14::run_day(false);
     day15::run_day(false);
     day16::run_day(false);
-    day17::run_day(false);
-    day18::run_day(false);
-    day19::run_day(true);
+    // day17::run_day(false);
+    // day18::run_day(false);
     day19::run_day(false);
+    day20::run_day(true);
+    day20::run_day(false);
 
     return 0;
 }
