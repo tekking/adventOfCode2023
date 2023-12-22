@@ -59,12 +59,14 @@ namespace day22
         Point endA{};
         Point endB{};
         int originalIndex{};
+        std::vector<Point> coordinatesContained{};
 
-        Brick(Point a, Point b, int index)
+        Brick(const Point& a, const Point& b, int index)
         {
             endA = a;
             endB = b;
-            index = originalIndex;
+            originalIndex = index;
+            initializeOccupiedCoordinates();
         }
 
         [[nodiscard]] size_t lowestZ() const
@@ -81,49 +83,32 @@ namespace day22
         {
             endA.z--;
             endB.z--;
+
+            for (Point& point : coordinatesContained)
+            {
+                point.z--;
+            }
         }
 
         void raiseOne()
         {
             endA.z++;
             endB.z++;
+
+            for (Point& point : coordinatesContained)
+            {
+                point.z++;
+            }
         }
 
         [[nodiscard]] bool intersects(const std::vector<std::vector<std::vector<bool>>>& occupiedCoordinatesLookup) const
         {
-            if (endA.x != endB.x)
+            for (const auto& point : coordinatesContained)
             {
-                for(size_t x{std::min(endA.x, endB.x)}; x <= std::max(endA.x, endB.x); x++)
+                if (occupiedCoordinatesLookup[point.x][point.y][point.z])
                 {
-                    if (occupiedCoordinatesLookup[x][endA.y][endA.z])
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-            }
-            else if (endA.y != endB.y)
-            {
-                for (size_t y{ std::min(endA.y, endB.y) }; y <= std::max(endA.y, endB.y); y++)
-                {
-                    if (occupiedCoordinatesLookup[endA.x][y][endA.z])
-                    {
-                        return true;
-                    }
-                }
-            }
-            else if (endA.z != endB.z)
-            {
-                for (size_t z{ std::min(endA.z, endB.z) }; z <= std::max(endA.z, endB.z); z++)
-                {
-                    if (occupiedCoordinatesLookup[endA.x][endA.y][z])
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                return occupiedCoordinatesLookup[endA.x][endA.y][endA.z];
             }
 
             return false;
@@ -131,78 +116,50 @@ namespace day22
 
         [[nodiscard]] bool intersects(const std::vector<std::vector<std::vector<int>>>& occupiedCoordinatesByBrickLookup) const
         {
-            if (endA.x != endB.x)
+            for (const auto& point : coordinatesContained)
             {
-                for (size_t x{ std::min(endA.x, endB.x) }; x <= std::max(endA.x, endB.x); x++)
+                const auto occupiedBy{ occupiedCoordinatesByBrickLookup[point.x][point.y][point.z] };
+                if (occupiedBy >= 0 && occupiedBy != originalIndex)
                 {
-                    const auto occupiedBy{ occupiedCoordinatesByBrickLookup[x][endA.y][endA.z] };
-                    if (occupiedBy >= 0 && occupiedBy != originalIndex)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
-            }
-            else if (endA.y != endB.y)
-            {
-                for (size_t y{ std::min(endA.y, endB.y) }; y <= std::max(endA.y, endB.y); y++)
-                {
-                    const auto occupiedBy{ occupiedCoordinatesByBrickLookup[endA.x][y][endA.z] };
-                    if (occupiedBy >= 0 && occupiedBy != originalIndex)
-                    {
-                        return true;
-                    }
-                }
-            }
-            else if (endA.z != endB.z)
-            {
-                for (size_t z{ std::min(endA.z, endB.z) }; z <= std::max(endA.z, endB.z); z++)
-                {
-                    const auto occupiedBy{ occupiedCoordinatesByBrickLookup[endA.x][endA.y][z] };
-                    if (occupiedBy >= 0 && occupiedBy != originalIndex)
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                const auto occupiedBy{ occupiedCoordinatesByBrickLookup[endA.x][endA.y][endA.z] };
-                return occupiedBy >= 0 && occupiedBy != originalIndex;
             }
 
             return false;
         }
 
-        [[nodiscard]] std::vector<Point> getCoordinatesOccupied() const
+        void initializeOccupiedCoordinates()
         {
-            std::vector<Point> result{};
             if (endA.x != endB.x)
             {
                 for (size_t x{ std::min(endA.x, endB.x) }; x <= std::max(endA.x, endB.x); x++)
                 {
-                    result.emplace_back(x, endA.y, endA.z);
+                    coordinatesContained.emplace_back(x, endA.y, endA.z);
                 }
             }
             else if (endA.y != endB.y)
             {
                 for (size_t y{ std::min(endA.y, endB.y) }; y <= std::max(endA.y, endB.y); y++)
                 {
-                    result.emplace_back(endA.x, y, endA.z);
+                    coordinatesContained.emplace_back(endA.x, y, endA.z);
                 }
             }
             else if (endA.z != endB.z)
             {
                 for (size_t z{ std::min(endA.z, endB.z) }; z <= std::max(endA.z, endB.z); z++)
                 {
-                    result.emplace_back(endA.x, endA.y, z);
+                    coordinatesContained.emplace_back(endA.x, endA.y, z);
                 }
             }
             else
             {
-                result.push_back(endA);
+                coordinatesContained.push_back(endA);
             }
+        }
 
-            return result;
+        [[nodiscard]] const std::vector<Point>& getCoordinatesOccupied() const
+        {
+            return coordinatesContained;
         }
     };
 
@@ -288,7 +245,7 @@ namespace day22
             }
         }
 
-        [[nodiscard]] bool brickIsSafeToRemove(const Brick& b) const
+        [[nodiscard]] bool brickIsSafeToRemove(const Brick& b)
         {
             // Naive implementation that reruns dropping algorithm for all bricks after removal
             // Determine ranges for the occupied lookup
@@ -320,22 +277,25 @@ namespace day22
             }
 
             // Check if any brick now can drop
-            for (Brick restingBrick : restingBricks)
+            for (auto& restingBrick : restingBricks)
             {
                 restingBrick.dropOne();
 
                 if (restingBrick.endA.z == 0 || restingBrick.endB.z == 0)
                 {
                     // Can't fall below ground;
+                    restingBrick.raiseOne();
                     continue;
                 }
 
                 if (restingBrick.intersects(occupiedByBrick))
                 {
+                    restingBrick.raiseOne();
                     continue;
                 }
 
                 // Brick can drop!
+                restingBrick.raiseOne();
                 return false;
             }
 
@@ -411,7 +371,7 @@ namespace day22
             return nrDropped;
         }
 
-        [[nodiscard]] long long determineNumberOfSafeBricksToDrop() const
+        [[nodiscard]] long long determineNumberOfSafeBricksToDrop()
         {
             long long nr{};
             for (const auto& restingBrick : restingBricks)
