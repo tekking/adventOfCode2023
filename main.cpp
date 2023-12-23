@@ -20,6 +20,7 @@
 #include "day20.h"
 #include "day21.h"
 #include "day22.h"
+#include "day23.h"
 
 int main()
 {
@@ -44,9 +45,10 @@ int main()
     // day18::run_day(false);
     day19::run_day(false);
     // day20::run_day(false);
-    // day21::run_day(false); // barely works
-    day22::run_day(true);
-    day22::run_day(false);
+    // day21::run_day(false); // barely works, requires manual action after
+    // day22::run_day(false);
+    day23::run_day(true);
+    day23::run_day(false);
 
 
     return 0;
