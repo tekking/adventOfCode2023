@@ -36,8 +36,7 @@ int main()
     day09::run_day(false);
     day10::run_day(false);
     day11::run_day(false);
-    // day12::run_day(true);
-    // day12::run_day(false);
+    day12::run_day(false);
     day13::run_day(false);
     day14::run_day(false);
     day15::run_day(false);
