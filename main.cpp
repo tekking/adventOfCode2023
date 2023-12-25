@@ -42,17 +42,16 @@ int main()
     day14::run_day(false);
     day15::run_day(false);
     day16::run_day(false);
-    // day17::run_day(false);
-    // day18::run_day(false);
+    day17::run_day(false);
+    day18::run_day(false);
     day19::run_day(false);
-    // day20::run_day(false);
-    // day21::run_day(false); // barely works, requires manual action after
-    // day22::run_day(false);
-    // day23::run_day(false);
+    day20::run_day(false);
+    day21::run_day(false); // Fake works, requires manual action after to fit quadratic function
+    day22::run_day(false);
+    day23::run_day(false);
     day24::run_day(false);
     day25::run_day(true);
     day25::run_day(false);
-
 
     return 0;
 }
