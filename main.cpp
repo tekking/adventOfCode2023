@@ -50,7 +50,6 @@ int main()
     day22::run_day(false);
     day23::run_day(false);
     day24::run_day(false);
-    day25::run_day(true);
     day25::run_day(false);
 
     return 0;
