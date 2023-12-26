@@ -428,3 +428,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+inputs/
